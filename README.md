@@ -36,6 +36,8 @@ To run the container
 docker run -d -p 50051:50051 grpc-user-service
 ```
 
+## Testing
+
 To test the server.go
 
 ```bash
@@ -44,4 +46,61 @@ go test -v ./...
 
 ```
 Replace placeholders like `path/to/your/proto/package` with the actual path to your protobuf package.
+```
+
+## Accessing gRPC Service Endpoints
+
+```bash
+package main
+
+import (
+    "context"
+    "log"
+    "time"
+
+    "google.golang.org/grpc"
+    pb "path/to/your/proto/package"
+)
+
+func main() {
+    // Create a connection to the server
+    conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+    if err != nil {
+        log.Fatalf("Failed to dial server: %v", err)
+    }
+    defer conn.Close()
+
+    client := pb.NewUserServiceClient(conn)
+
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+    defer cancel()
+
+    // Example: Sending GetUserByIdRequest
+    getUserByIdRequest := &pb.GetUserByIdRequest{Id: 1}
+    getUserByIdResponse, err := client.GetUserById(ctx, getUserByIdRequest)
+    if err != nil {
+        log.Fatalf("GetUserById failed: %v", err)
+    }
+    log.Printf("GetUserById Response: %v", getUserByIdResponse)
+
+    // Example: Sending GetUsersListRequest
+    getUsersListRequest := &pb.GetUsersListRequest{Ids: []int32{1, 2, 3}}
+    getUsersListResponse, err := client.GetUsersList(ctx, getUsersListRequest)
+    if err != nil {
+        log.Fatalf("GetUsersList failed: %v", err)
+    }
+    log.Printf("GetUsersList Response: %v", getUsersListResponse)
+
+    // Example: Sending SearchByCriteriaRequest
+    searchByCriteriaRequest := &pb.SearchByCriteriaRequest{
+        City:      "LA",
+        IsMarried: true,
+    }
+    searchByCriteriaResponse, err := client.SearchByCriteria(ctx, searchByCriteriaRequest)
+    if err != nil {
+        log.Fatalf("SearchByCriteria failed: %v", err)
+    }
+    log.Printf("SearchByCriteria Response: %v", searchByCriteriaResponse)
+}
+
 ```
