@@ -10,9 +10,6 @@ This project implements a gRPC-based user service in Golang, providing functiona
 - [Running the Application](#running-the-application)
 - [Accessing gRPC Service Endpoints](#accessing-grpc-service-endpoints)
 - [Testing](#testing)
-- [Extra Brownie Points](#extra-brownie-points)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
