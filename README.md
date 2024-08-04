@@ -22,31 +22,23 @@ Before running the application, ensure you have the following installed:
 - Docker
 - Go (if building from source)
 
-## Building the Application
 
-To build the Docker image for this application:
-
-```bash
-docker build -t grpc-user-service .
+## Run the server.go from root of directory
+``` bash
+go run server.go
 ```
 
-To run the container
-
+## Run the client from mock-gRPC-Project/client/client.go
 ```bash
-docker run -d -p 50051:50051 grpc-user-service
+go run client.go
 ```
+ 
 
 ## Testing
-
-To test the server.go
-
-```bash
-go test -v ./...
+``` bash
+go run server_test.go
 ```
-
-```
-Replace placeholders like `path/to/your/proto/package` with the actual path to your protobuf package.
-```
+ 
 
 ## Accessing gRPC Service Endpoints
 
